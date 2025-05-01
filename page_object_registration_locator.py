@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 
-
 class LoginPageAround:
     # El localizador del campo Correo electrónico
     email_field = (By.ID, 'email')
@@ -9,7 +8,7 @@ class LoginPageAround:
     # El localizador del botón Iniciar sesión
     sign_in_button = (By.CLASS_NAME, 'auth-form__button')
     # Agrega aquí un localizador para el botón Registrarse
-    register_buttin 0 (By)
+    register_button = (By.CLASS_NAME, 'header__auth-link')
 
     # El constructor de clase
     def __init__(self, driver):
@@ -25,9 +24,9 @@ class LoginPageAround:
 
     # El método hace clic en el botón Registrarse
     def click_registration_button(self):
-        ...
+        self.driver.find_element(*self.register_button).click()
 
     # El método valida el texto en el botón Registrarse
     def check_text_registration_button(self):
-        registration_button_text = ...
-        assert ...
+        registration_button_text = self.driver.find_element(*self.register_button).text
+        assert registration_button_text == "registrarse", "el text no coincide"
