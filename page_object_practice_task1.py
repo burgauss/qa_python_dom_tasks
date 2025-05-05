@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
@@ -31,18 +33,18 @@ class LoginPageAround:
 # Clase para la página principal
 class HomePageAround:
     # Crea un localizador para el campo Ocupación en el perfil de usuario
-    profile_description = ...
+    profile_description = (By.CLASS_NAME, 'profile__description')
 
     def __init__(self, driver):
         self.driver = driver
 
     # Espera a que aparezca el campo Ocupación
     def wait_for_load_home_page(self):
-        WebDriverWait(self.driver, 3).until(expected_conditions.visibility_of_element_located(self.profile_description))
+       WebDriverWait(self.driver, 3).until(expected_conditions.visibility_of_element_located(self.profile_description))
 
     # Recupera el valor del campo Ocupación
     def get_description(self):
-        return ...
+        return self.driver.find_element(*self.profile_description).text
 
 
 class TestAround:
@@ -57,23 +59,23 @@ class TestAround:
     def test_get_description(self):
         # Abre la página de la aplicación de prueba
         self.driver.get('https://around-v1.nm.tripleten-services.com/signin?lng=es')
-
+        time.sleep(3)
         # Crea una clase de objeto de página para la página de inicio de sesión
-        ...
+        login_page = LoginPageAround(self.driver)
         # iniciar sesión
-        ...
+        login_page.login('burgos.137@gmail.com', '12345')
 
         # Crea un objeto de página para la página principal
-        ...
+        home_page = HomePageAround(self.driver)
         # Espera a que se cargue la página principal
-        ...
+        home_page.wait_for_load_home_page()
         # Guarda el valor de Ocupación en la descripción
-        description = ...
+        description = home_page.get_description()
 
         # Utiliza assert para comprobar que el valor actual de Ocupación coincida con el valor esperado
-        assert ...
+        assert description == 'Explorer'
 
     @classmethod
     def teardown_class(cls):
         # Cerrar el navegador
-        ...
+        cls.driver.quit()
